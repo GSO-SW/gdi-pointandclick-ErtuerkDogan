@@ -20,7 +20,9 @@ namespace gdi_PointAndClick
             int h = this.ClientSize.Height;
 
             // Zeichenmittel
-            Brush b = new SolidBrush(Color.Black);
+            Random random = new Random();
+            Color[] rngFarben = {Color.White, Color.Black, Color.Yellow, Color.Green, Color.Gold, Color.Orange, Color.Blue, Color.Red, Color.Turquoise};
+            Brush b = new SolidBrush(rngFarben[random.Next(rngFarben.Length)]);
 
 
             for (int i = 0; i < rectangles.Count; i++)
@@ -33,12 +35,24 @@ namespace gdi_PointAndClick
         private void FrmMain_MouseClick(object sender, MouseEventArgs e)
         {
             Point mausposition = e.Location;
+            bool frei = true;
             Random random = new Random();
-            int size = random.Next(50);
 
-            Rectangle r = new Rectangle(mausposition.X-(size / 2), mausposition.Y- (size / 2), size, size);
+            for (int i = 0; i < rectangles.Count; i++)
+            {
+                if (rectangles[i].Contains(mausposition))
+                {
+                    frei = false;
+                }
+            }
+            if (frei)
+            {
+                int size = random.Next(10,50);
 
-            rectangles.Add(r);  // Kurze Variante: rectangles.Add( new Rectangle(...)  );
+                Rectangle r = new Rectangle(mausposition.X - (size / 2), mausposition.Y - (size / 2), size, size);
+
+                rectangles.Add(r);  // Kurze Variante: rectangles.Add( new Rectangle(...)  );
+            }
 
             Refresh();
         }
